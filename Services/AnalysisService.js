@@ -10,7 +10,7 @@ class AnalysisService
         let res = null
         await axios.get(process.env.ANALYSIS_AGENT_URL + "/base")
         .then((response) => {res = response.data})
-        .catch((err) => {res = err.response.data})
+        .catch((err) => {console.log(err);res = err.response.data})
         return res
     }
 
@@ -22,7 +22,7 @@ class AnalysisService
             console.log(response.data)
             res = response.data 
         })
-        .catch((err) => {res = err.response.data})
+        .catch((err) => {console.log(err);res = err.response.data})
         return res
     }   
 
@@ -31,7 +31,7 @@ class AnalysisService
         let res = null
         await axios.get(process.env.ANALYSIS_AGENT_URL + "/worktypes")
         .then((response) => {res = response.data})
-        .catch((err) => {res = err.response.data})
+        .catch((err) => {console.log(err);res = err.response.data})
         return res
     }
 
@@ -40,13 +40,12 @@ class AnalysisService
         let res = null
         await axios.get(process.env.ANALYSIS_AGENT_URL + "/objcategories")
         .then((response) => {res = response.data})
-        .catch((err) => {res = err.response.data})
+        .catch((err) => {console.log(err);res = err.response.data})
         return res
     }
 
     async XlsxById(id, name)
     {
-        let res = null
         await DownloadFile(process.env.ANALYSIS_AGENT_URL + `/xlsxbyid/${id}/${name}`, 'Temp/tmp.xlsx')
         var readStream = fs.createReadStream('Temp/tmp.xlsx');
         return readStream
@@ -54,7 +53,6 @@ class AnalysisService
 
     async XlsById(id, name)
     {
-        let res = null
         await DownloadFile(process.env.ANALYSIS_AGENT_URL + `/xlsbyid/${id}/${name}`, 'Temp/tmp.xls')
         var readStream = fs.createReadStream('Temp/tmp.xls');
         return readStream
@@ -62,7 +60,6 @@ class AnalysisService
 
     async CsvById(id, name)
     {
-        let res = null
         await DownloadFile(process.env.ANALYSIS_AGENT_URL + `/csvbyid/${id}/${name}`, 'Temp/tmp.csv')
         var readStream = fs.createReadStream('Temp/tmp.csv');
         return readStream
