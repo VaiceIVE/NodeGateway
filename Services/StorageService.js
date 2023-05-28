@@ -2,7 +2,6 @@ const FormData = require('form-data')
 const path = require('path')
 const axios = require('axios')
 const fs = require('fs')
-
 class StorageService
 {
     async Upload(files)
