@@ -5,18 +5,30 @@ class StorageController
 {
     async GetFile(req, res, next)
     {
-        const {filename} = req.params
+        try {
+            const {filename} = req.params
 
-        const stream = await StorageService.GetFile(filename);
+            const stream = await StorageService.GetFile(filename);
 
-        stream.pipe(res).on('finish', () => {fs.unlink(`Temp/${filename}`, (err) => {err ? console.log(err) : null})});
+            stream.pipe(res).on('finish', () => {fs.unlink(`Temp/${filename}`, (err) => {err ? console.log(err) : null})});
+        } catch (error) {
+            console.log(err)
+            next(err)
+        }
+        
     }
 
     async GetList(req, res, next)
     {
-        const response = await StorageService.GetAll()
+        try {
+            const response = await StorageService.GetAll()
         
-        res.json(response)
+            res.json(response)
+        } catch (error) {
+            console.log(err)
+            next(err)
+        }
+       
     }
 }
 
