@@ -2,37 +2,25 @@ const FormData = require('form-data')
 const path = require('path')
 const axios = require('axios')
 const fs = require('fs')
+const DownloadFile = require('../Functions/DownloadFile')
+
 class StorageService
 {
-    async Upload(files)
+    async GetFile(filename)
     {
-        var filenames = []
-        for (const filename of files)
-        {
-            var filePath = path.join(__dirname, "../Storage", filename);
+        await DownloadFile(process.env.STORAGE_AGENT_URL + `/file/${filename}`, `Temp/${filename}`)
 
-            var readStream = fs.createReadStream(filePath);
-    
-            const form = new FormData();
-            form.append('file', readStream);
-    
-            const request_config = {
-                headers: {
-                  ...form.getHeaders()
-                }
-              };
-              
-            await axios.post(process.env.STORAGE_AGENT_URL + "/upload", form)
-            .then((res) => {filenames.push(res.data)})
-            .catch((err) => {console.log(err.response.data)})
-        }
-        return filenames
-    }   
+        return fs.createReadStream(`Temp/${filename}`)
+    } 
 
-    async UploadByUrl(url, type)
+    async GetAll()
     {
-
-    }
+        let res = null
+        await axios.get(process.env.STORAGE_AGENT_URL + "/list")
+        .then((response) => {res = response.data})
+        .catch((err) => {res = err.response.data})
+        return res
+    } 
 }
 
 module.exports = new StorageService()

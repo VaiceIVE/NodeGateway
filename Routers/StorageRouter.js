@@ -1,10 +1,10 @@
-// const express = require('express')
-// const uploader = require('../Services/UploadHelperService')
-// const StorageController = require('../Controllers/StorageController')
-// const router = express()
+const express = require('express')
+const uploader = require('../Services/UploadHelperService')
+const StorageController = require('../Controllers/StorageController')
+const router = express()
 
-// router.post('/upload', uploader.single('file'), StorageController.Upload())
-// router.post('/urlupload', StorageController.Upload())
+router.get('/list', StorageController.GetList)
+router.get('/file/:filename', StorageController.GetFile)
+//list and fileget
 
-
-// module.exports = router
+module.exports = router
